@@ -20,8 +20,11 @@ async fn handle_connection(
                 let msg = msg?;
                 if msg.is_text() {
                     let text = msg.as_text().ok_or("Failed to get text")?;
-                    println!("Received from {addr}: {text}");
-                    bcast_tx.send(text.to_string())?;
+                    println!("From client {addr}: \"{text}\"");
+
+                    // Sertakan alamat pengirim dalam pesan broadcast
+                    let formatted_msg = format!("{addr}: {text}");
+                    bcast_tx.send(formatted_msg)?;
                 }
             }
             // Handle broadcast messages to be sent to the client
@@ -40,17 +43,15 @@ async fn handle_connection(
 async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let (bcast_tx, _) = channel(16);
 
-    let listener = TcpListener::bind("127.0.0.1:8080").await?;
-    println!("listening on port 8080");
+    let listener = TcpListener::bind("127.0.0.1:2000").await?;
+    println!("listening on port 2000");
 
     loop {
         let (socket, addr) = listener.accept().await?;
-        println!("New connection from {addr:?}");
+        println!("New connection from Favian's Computer{addr:?}");
         let bcast_tx = bcast_tx.clone();
         tokio::spawn(async move {
-            // Wrap the raw TCP stream into a websocket.
             let (_req, ws_stream) = ServerBuilder::new().accept(socket).await?;
-
             handle_connection(addr, ws_stream, bcast_tx).await
         });
     }

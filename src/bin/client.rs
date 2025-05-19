@@ -6,7 +6,7 @@ use tokio_websockets::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
-    let url = "ws://127.0.0.1:8080";
+    let url = "ws://127.0.0.1:2000";
 
     let (ws_stream, _) = tokio_websockets::ClientBuilder::new()
         .uri(url)?
@@ -15,8 +15,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
     let (mut ws_sender, mut ws_receiver) = ws_stream.split();
     let mut stdin = tokio::io::BufReader::new(tokio::io::stdin()).lines();
 
-    println!("Connected to {url}");
-    println!("Type your messages and press Enter to send");
+    println!("Favian's Computer - From server: Welcome to chat! Type a message");
 
     loop {
         tokio::select! {
@@ -28,7 +27,7 @@ async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
             Some(msg) = ws_receiver.next() => {
                 let msg = msg?;
                 if msg.is_text() {
-                    println!("Received: {}", msg.as_text().ok_or("Not a text message")?);
+                    println!("Favian's Computer - From server: {}", msg.as_text().ok_or("Not a text message")?);
                 }
             }
             else => break,
