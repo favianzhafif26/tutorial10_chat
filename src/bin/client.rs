@@ -6,7 +6,7 @@ use tokio_websockets::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error + Send + Sync>> {
-    let url = "ws://127.0.0.1:2000";
+    let url = "ws://127.0.0.1:8080";
 
     let (ws_stream, _) = tokio_websockets::ClientBuilder::new()
         .uri(url)?

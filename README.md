@@ -1,5 +1,6 @@
 # Module 10 - Tutorial 2
 
+## Experiment 2.1
 ![img.png](img.png)
 
 Membuat chat app berbasis WebSocket di mana banyak client bisa saling terhubung ke satu server dan saling mengirim pesan seperti group chat.
@@ -58,3 +59,7 @@ Masing-masing adalah instance client berbeda. Terhubung ke `ws://127.0.0.1:2000`
     - Menerima broadcast (server).
 
 Channel `broadcast` di server adalah pola ideal untuk siaran ke banyak client tanpa perlu tahu siapa saja yang terhubung.
+
+## Experiment 2.2
+Protokol WebSocket `(ws://)` dalam aplikasi ini diimplementasikan di dua bagian utama: di sisi client melalui variabel url dengan format `ws://127.0.0.1:8080`, dan di sisi server melalui `tokio_websockets::ServerBuilder` yang mengubah koneksi TCP menjadi koneksi WebSocket. Agar komunikasi dapat berjalan, kedua sisi harus menggunakan protokol dan port yang sama, yaitu `ws://` dan `port 8080`. WebSocket dipilih karena mampu menyediakan koneksi dua arah secara terus-menerus (full-duplex), yang sangat cocok untuk kebutuhan aplikasi chat secara real-time.
+
